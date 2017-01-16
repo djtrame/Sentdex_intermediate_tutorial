@@ -33,6 +33,8 @@ class BlueBlob(Blob):
         self.x += random.randrange(-7,8)
         self.y += random.randrange(-7,8)
 
+
+
 def draw_environment(blob_group_list):
     game_display.fill(WHITE)
 

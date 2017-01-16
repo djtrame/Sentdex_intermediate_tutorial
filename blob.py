@@ -24,6 +24,9 @@ class Blob:
         self.x += self.move_x
         self.y += self.move_y
 
+    def change_movement_range(self, movement_adjust):
+        self.movement_range = (self.movement_range[0] - movement_adjust, self.movement_range[1] + movement_adjust)
+
     def check_bounds(self):
         if self.x < 0:
             self.x = 0
