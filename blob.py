@@ -1,5 +1,6 @@
 import random
 
+
 class Blob:
 
     #called dunder init method
@@ -15,6 +16,22 @@ class Blob:
         self.x = random.randrange(0, self.x_boundary)
         self.y = random.randrange(0, self.y_boundary)
         self.movement_range = movement_range
+
+    #repr is for debugging purposes and should be as condensed as possible
+    def __repr__(self):
+        # return 'Blob({}, {}, ({}, {}))'.format(self.color,
+        #                                        self.size,
+        #                                        self.x,
+        #                                        self.y)
+
+        #easier way of using the format brackets per comments in ep 24
+        return 'Blob({s.color}, {s.size}, ({s.x},{s.y})'.format(s=self)
+
+    def __str__(self):
+        return 'Blob of color:({}, size: {}, location: ({}, {}))'.format(self.color,
+                                                                           self.size,
+                                                                           self.x,
+                                                                           self.y)
 
     def move(self):
         #the upper bound on randrange is NOT included.  so a <= x < b

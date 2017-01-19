@@ -9,6 +9,7 @@ for i, j in enumerate(example):
 
 
 print('-------')
+print('dictionary:')
 new_dict = dict(enumerate(example))
 
 print(new_dict)

@@ -2,6 +2,19 @@ import pygame
 import random
 from blob import Blob
 import numpy as np
+import logging
+import datetime
+
+##debug
+##info
+##warning
+##error
+##critical
+
+#if you omit the filename param it just logs to console
+#logging.basicConfig(filename='logfile.log', level=logging.INFO)
+logging.basicConfig(level=logging.INFO)
+
 
 STARTING_BLUE_BLOBS = 25
 STARTING_RED_BLOBS = 20
@@ -24,6 +37,8 @@ class BlueBlob(Blob):
 
     #operator overloading... + is the add method
     def __add__(self, other_blob):
+        #only passing self and other_blob after repr and/or str methods changed
+        logging.info('Blob add op {} + {}'.format(str(self), str(other_blob)))
         if other_blob.color == (255, 0, 0):
             #red eats blue
             currentSize = self.size
@@ -66,6 +81,8 @@ def handle_collisions(blob_list):
     for blue_id, blue_blob in blues.copy().items():
         for other_blobs in blues, reds, greens:
             for other_blob_id, other_blob in other_blobs.copy().items():
+                #can use repr for easy access to object info
+                logging.debug('Checking if blobs are touching {} + {}'.format(repr(blue_blob), repr(other_blob)))
                 if blue_blob == other_blob: #is this blob touching itself?  we are iterating over a copy of the dict
                     pass
                 else:
@@ -101,14 +118,30 @@ def main():
     red_blobs = dict(enumerate([RedBlob(WIDTH, HEIGHT) for i in range(STARTING_RED_BLOBS)]))
     green_blobs = dict(enumerate([GreenBlob(WIDTH, HEIGHT) for i in range(STARTING_GREEN_BLOBS)]))
     while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
+        try:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
 
-        blue_blobs, red_blobs, green_blobs = draw_environment([blue_blobs, red_blobs, green_blobs])
-        clock.tick(60)
-
+            blue_blobs, red_blobs, green_blobs = draw_environment([blue_blobs, red_blobs, green_blobs])
+            clock.tick(60)
+        except Exception as e:
+            logging.critical(str(e))
+            pygame.quit()
+            quit()
+            break
 
 if __name__ == '__main__':
+    blue_blobs = dict(enumerate([BlueBlob(WIDTH, HEIGHT) for i in range(STARTING_BLUE_BLOBS)]))
+    red_blobs = dict(enumerate([RedBlob(WIDTH, HEIGHT) for i in range(STARTING_RED_BLOBS)]))
+    green_blobs = dict(enumerate([GreenBlob(WIDTH, HEIGHT) for i in range(STARTING_GREEN_BLOBS)]))
+    print(repr(datetime.datetime.now()))
+    print(datetime.datetime.now())
+    print(str(datetime.datetime.now()))
+
+    #after repr method changed in the Blob class this prints something useful
+    #well, once str method changed this referenced str
+    print(blue_blobs[0])
+
     main()
